@@ -14,13 +14,20 @@ import phoneImage from '../../assets/video-call.png'
 import Input from '../../components/input';
 import { ChangeEvent, useState } from 'react';
 import Button from '../../components/button';
+import { useHistory } from 'react-router';
 
 const Home = () => {
+
+  const history = useHistory();
 
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
+  const handleChangeRoomName = (e: ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value);
+
+  const handleClick = () => {
+    history.push('/room');
   }
 
   return (
@@ -40,10 +47,10 @@ const Home = () => {
           <SecondaryText>Remember and create new moments</SecondaryText>
         </DescriptionContainer>
         <InputContainer>
-          <Input onChange={handleChange} value={username} placeholder='username' />
-          <Input onChange={handleChange} value={username} placeholder='room name' />
+          <Input onChange={handleChangeUsername} value={username} placeholder='username' />
+          <Input onChange={handleChangeRoomName} value={roomName} placeholder='room name' />
         </InputContainer>
-        <ButtonContainer>
+        <ButtonContainer onClick={handleClick}>
           <Button>Create room</Button>
         </ButtonContainer>
       </Grid>

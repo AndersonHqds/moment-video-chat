@@ -9,4 +9,9 @@ export const Button = styled.button<ButtonProps>`
   border-radius: ${(props) => (props.height ? props.height / 2 : "25px")};
   border: none;
   font-size: ${(props) => props.fontSize ?? "18px"};
+  transition: 0.3s;
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
 `;

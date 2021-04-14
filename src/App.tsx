@@ -1,8 +1,24 @@
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import Home from './pages/home';
+import Room from "./pages/room";
 
 function App() {
   return (
-    <Home />
+    <Router>
+      <Switch>
+        <Route path="/room">
+          <Room />
+        </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
