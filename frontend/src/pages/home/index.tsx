@@ -12,7 +12,7 @@ import {
 import { ReactComponent as LogoImage } from '../../assets/logo.svg'
 import phoneImage from '../../assets/video-call.png'
 import Input from '../../components/input';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Button from '../../components/button';
 import { useHistory } from 'react-router';
 
@@ -22,13 +22,18 @@ const Home = () => {
 
   const [username, setUsername] = useState('');
   const [roomName, setRoomName] = useState('');
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
   const handleChangeRoomName = (e: ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value);
 
   const handleClick = () => {
-    history.push('/room');
+    history.push('/room', { username, roomName });
   }
+
+  useEffect(() => {
+    setIsButtonEnabled(username.length > 0 && roomName.length > 0);
+  }, [username, roomName])
 
   return (
     <Container>
@@ -51,7 +56,7 @@ const Home = () => {
           <Input onChange={handleChangeRoomName} value={roomName} placeholder='room name' />
         </InputContainer>
         <ButtonContainer onClick={handleClick}>
-          <Button>Create room</Button>
+          <Button disabled={!isButtonEnabled}>Create room</Button>
         </ButtonContainer>
       </Grid>
     </Container>

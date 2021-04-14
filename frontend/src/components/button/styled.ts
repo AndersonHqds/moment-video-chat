@@ -11,7 +11,10 @@ export const Button = styled.button<ButtonProps>`
   font-size: ${(props) => props.fontSize ?? "18px"};
   transition: 0.3s;
   cursor: pointer;
-  :hover {
+  :hover:enabled {
     opacity: 0.8;
+  }
+  :disabled {
+    filter: brightness(55%);
   }
 `;

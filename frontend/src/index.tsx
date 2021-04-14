@@ -1,8 +1,11 @@
 import ReactDOM from 'react-dom'
-import './index.css'
+import GlobalStyle from './styled';
 import App from './App'
 
 ReactDOM.render(
-  <App />,
+  <>
+    <App />
+    <GlobalStyle />
+  </>,
   document.getElementById('root')
 )

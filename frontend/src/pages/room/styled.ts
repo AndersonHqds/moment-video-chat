@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { IconButtonProps } from "./types";
 
 export const Container = styled.div`
   width: 100%;
@@ -22,10 +23,11 @@ export const ToolBar = styled.div`
   align-items: center;
 `;
 
-export const IconButton = styled.button`
+export const IconButton = styled.button<IconButtonProps>`
   width: 60px;
   height: 60px;
   border-radius: 32px;
+  background-color: ${(props) => (props.isActive ? "#EFEFEF" : "#DDD")};
   margin: 0 10px;
   font-size: 25px;
   display: flex;
