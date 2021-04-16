@@ -20,7 +20,7 @@ router.post(
     const { identity, room } = req.body;
 
     const token = getToken(identity, room, config);
-    res.status(200).send({ token });
+    res.status(200).send({ token: token.toJwt() });
   }
 );
 

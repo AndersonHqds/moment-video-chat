@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     border: 0;
   }
+
+  body, input, input::placeholder, span {
+    font-family: "Roboto", sans-serif;
+  }
   
   a, button, a:hover, a:active, a:focus, input, body {
     outline: 0;

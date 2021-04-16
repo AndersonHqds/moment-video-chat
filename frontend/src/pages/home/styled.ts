@@ -12,12 +12,14 @@ export const Container = styled.div`
 
 export const Logo = styled.div`
   display: flex;
-  font-family: "Lilita One", sans-serif;
-  font-size: 42px;
-  color: #fff;
   padding-left: 100px;
   width: 100%;
   padding-bottom: 50px;
+  span {
+    font-family: "Lilita One", sans-serif;
+    font-size: 42px;
+    color: #fff;
+  }
 `;
 
 export const Grid = styled.div<GridProps>`

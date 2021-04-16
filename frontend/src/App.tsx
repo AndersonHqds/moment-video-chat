@@ -1,9 +1,5 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import Home from './pages/home';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./pages/home";
 import Room from "./pages/room";
 
 function App() {

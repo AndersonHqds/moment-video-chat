@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 
 import { tokenRouter } from "./routes/token";
@@ -11,6 +12,7 @@ dotenv.config();
 
 const app = express();
 app.use(json());
+app.use(cors());
 app.use(tokenRouter);
 
 app.all("*", async () => {
@@ -28,8 +30,8 @@ const start = () => {
     throw new Error("Some environment variable is missing");
   }
 
-  app.listen(3000, () => {
-    console.log("Listening on port 3000!!!!");
+  app.listen(3001, () => {
+    console.log("Listening on port 3001!!!!");
   });
 };
 

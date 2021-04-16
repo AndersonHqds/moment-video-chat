@@ -12,6 +12,8 @@ export const VideoContainer = styled.div`
   width: 100%;
   height: 90vh;
   background-color: #333333;
+  display: flex;
+  justify-content: center;
 `;
 
 export const ToolBar = styled.div`
@@ -27,7 +29,7 @@ export const IconButton = styled.button<IconButtonProps>`
   width: 60px;
   height: 60px;
   border-radius: 32px;
-  background-color: ${(props) => (props.isActive ? "#EFEFEF" : "#DDD")};
+  background-color: ${(props) => (props.isActive ? "#EFEFEF" : "#b00525")};
   margin: 0 10px;
   font-size: 25px;
   display: flex;
@@ -36,8 +38,13 @@ export const IconButton = styled.button<IconButtonProps>`
   border: solid 1px #ddd;
   transition: 0.3s;
   cursor: pointer;
-  color: #000c66;
+  color: ${(props) => (props.isActive ? "#000c66" : "#EFEFEF")};
   :hover {
     opacity: 0.5;
   }
+`;
+
+export const RoomName = styled.span`
+  position: absolute;
+  left: 20px;
 `;
