@@ -7,7 +7,12 @@ export const Container = styled.div`
   background-image: linear-gradient(to right, #7ec8e3, #5252ed);
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-row-gap: 100px;
+
+  @media (max-width: 880px) {
+    grid-template-columns: 100%;
+    height: auto;
+    padding: 20px 0;
+  }
 `;
 
 export const Logo = styled.div`
@@ -19,6 +24,11 @@ export const Logo = styled.div`
     font-family: "Lilita One", sans-serif;
     font-size: 42px;
     color: #fff;
+  }
+
+  @media (max-width: 880px) {
+    padding-left: 0px;
+    justify-content: center;
   }
 `;
 
@@ -39,6 +49,10 @@ export const DescriptionContainer = styled.div`
   color: #fff;
   font-weight: bold;
   margin-bottom: 50px;
+
+  @media (max-width: 880px) {
+    text-align: center;
+  }
 `;
 
 export const MainText = styled.h1`
@@ -51,13 +65,30 @@ export const SecondaryText = styled.h2`
 `;
 
 export const InputContainer = styled.div`
-  width: 425px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 50px;
+
+  input {
+    margin-right: 20px;
+  }
+
+  @media (max-width: 880px) {
+    flex-direction: column;
+    align-items: center;
+    input {
+      margin-top: 10px;
+    }
+  }
 `;
 
 export const ButtonContainer = styled.div`
   width: 100%;
   height: 50px;
+
+  @media (max-width: 880px) {
+    display: flex;
+    justify-content: center;
+  }
 `;

@@ -1,123 +1,81 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import {
-  VideoTrackPublication,
-  AudioTrackPublication,
-  RemoteTrackPublication,
-  Track,
-  VideoTrack,
-  AudioTrack,
-} from "twilio-video";
+import { useEffect, useRef, useState } from "react";
 import { MdVideocam, MdVideocamOff, MdMic, MdMicOff } from "react-icons/md";
 
-import { ToolBar, Video, VideoCard, FirstNameChar, IconButton } from "./styled";
-import { Tracks, VideoTracks, AudioTracks, IProps } from "./types";
+import {
+  ToolBar,
+  Video,
+  VideoTurnedOff,
+  VideoCard,
+  FirstNameChar,
+  IconButton,
+} from "./styled";
+import { IProps } from "./types";
+import { useTrack } from "../../hooks/useTrack";
 
 const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
-  const [videoTracks, setVideoTracks] = useState<Tracks[]>([]);
-  const [audioTracks, setAudioTracks] = useState<Tracks[]>([]);
-  const [isRemoteCameraOn, setIsRemoteCameraOn] = useState(true);
-  const [isRemoteMicOn, setIsRemoteMicOn] = useState(true);
   const [opacity, setOpacity] = useState(false);
+  const {
+    audioTracks,
+    isRemoteCameraOn,
+    isRemoteMicOn,
+    videoTracks,
+  } = useTrack(participant);
+
+  const [
+    isRemoteCameraDisabledFromLocal,
+    setIsRemoteCameraDisabledFromLocal,
+  ] = useState(false);
+  const [
+    isRemoteMicDisabledFromLocal,
+    setIsRemoteMicDisabledFromLocal,
+  ] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const trackPublicationToTrack = (
-    trackMap: Map<Track.SID, VideoTrackPublication | AudioTrackPublication>
-  ) =>
-    Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
-
-  const trackSubscribed = (track: Tracks) => {
-    if (track.kind === "video") {
-      setVideoTracks((videoTracks) => [...videoTracks, track]);
-    } else {
-      setAudioTracks((audioTracks) => [...audioTracks, track]);
-    }
-  };
-
-  const trackUnsubscribed = (track: VideoTrack | AudioTrack) => {
-    if (track.kind === "video") {
-      setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
-    } else {
-      setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
-    }
-  };
-
-  useEffect(() => {
-    setVideoTracks(
-      trackPublicationToTrack(participant.videoTracks) as VideoTracks[]
-    );
-
-    setAudioTracks(
-      trackPublicationToTrack(participant.audioTracks) as AudioTracks[]
-    );
-
-    if (!isLocal) {
-      participant.on("trackSubscribed", trackSubscribed);
-      participant.on("trackUnsubscribed", trackUnsubscribed);
-    }
-
-    return () => {
-      setVideoTracks([]);
-      setAudioTracks([]);
-      participant.removeAllListeners();
-    };
-  }, [participant]);
-
   const showBar = () => {
-    setOpacity(true);
+    if (!isLocal) setOpacity(true);
   };
 
   const hideBar = () => {
-    setOpacity(false);
+    if (!isLocal) setOpacity(false);
   };
 
   const opacityControl = () => (+opacity - 0.3).toString();
 
-  const toggleCamera = () => {
-    if (!remoteHasDisableTrack("videoTracks")) {
-      videoTracks[0].mediaStreamTrack.enabled = !isRemoteCameraOn;
-      setIsRemoteCameraOn(!isRemoteCameraOn);
+  const toggleLocalCamera = () => {
+    if (isRemoteCameraOn) {
+      videoTracks[0].mediaStreamTrack.enabled = isRemoteCameraDisabledFromLocal;
+      setIsRemoteCameraDisabledFromLocal(!isRemoteCameraDisabledFromLocal);
     }
   };
 
-  const toggleMic = () => {
-    if (!remoteHasDisableTrack("audioTracks")) {
-      setIsRemoteMicOn(!isRemoteMicOn);
+  const toggleLocalMic = () => {
+    if (isRemoteMicOn) {
+      console.log(!isMicOn());
+      setIsRemoteMicDisabledFromLocal(isMicOn());
     }
   };
 
-  const remoteHasDisableTrack = useCallback(
-    (trackType: "videoTracks" | "audioTracks") => {
-      const isEnabled = Array.from(
-        participant[trackType] as Map<string, RemoteTrackPublication>
-      )?.[0]?.[1].isTrackEnabled;
-
-      return !isEnabled;
-    },
-    [participant, videoTracks]
-  );
-
-  const isMicOn = () => isRemoteMicOn && !remoteHasDisableTrack("audioTracks");
-  const isCameraOn = () =>
-    isRemoteCameraOn && !remoteHasDisableTrack("videoTracks");
+  const isMicOn = () => isRemoteMicOn && !isRemoteMicDisabledFromLocal;
+  const isCameraOn = () => isRemoteCameraOn && !isRemoteCameraDisabledFromLocal;
 
   useEffect(() => {
     const videoTrack = videoTracks[0];
     const audioTrack = audioTracks[0];
-    if (videoTrack && videoRef.current) {
+    if (videoTrack?.attach && videoRef.current) {
       videoTrack.attach(videoRef.current);
     }
 
-    if (audioTrack && audioRef.current) {
+    if (audioTrack?.attach && audioRef.current) {
       audioTrack.attach(audioRef.current);
     }
 
     return () => {
-      videoTrack?.detach();
-      audioTrack?.detach();
+      if (videoTrack?.detach && audioTrack?.detach) {
+        videoTrack?.detach();
+        audioTrack?.detach();
+      }
     };
   }, [videoTracks, audioTracks]);
 
@@ -136,18 +94,18 @@ const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
           <span>{participant.identity.toUpperCase()}</span>
         </ToolBar>
       )}
-      {videoTracks.length > 0 ? (
+      {isRemoteCameraOn ? (
         <Video ref={videoRef} autoPlay />
       ) : (
-        "Loading..."
+        <VideoTurnedOff />
       )}
-      <audio ref={audioRef} autoPlay muted={!isRemoteMicOn} />
+      <audio ref={audioRef} autoPlay muted={isRemoteMicDisabledFromLocal} />
       {!isLocal && (
         <ToolBar opacity={opacityControl()} justifyCenter>
-          <IconButton onClick={toggleMic} isActive={isMicOn()}>
+          <IconButton onClick={toggleLocalMic} isActive={isMicOn()}>
             {isMicOn() ? <MdMic /> : <MdMicOff />}
           </IconButton>
-          <IconButton onClick={toggleCamera} isActive={isCameraOn()}>
+          <IconButton onClick={toggleLocalCamera} isActive={isCameraOn()}>
             {isCameraOn() ? <MdVideocam /> : <MdVideocamOff />}
           </IconButton>
         </ToolBar>
@@ -155,5 +113,4 @@ const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
     </VideoCard>
   );
 };
-
 export default ParticipantCard;

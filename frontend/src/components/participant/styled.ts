@@ -18,6 +18,13 @@ export const Video = styled.video`
   background-color: #000;
 `;
 
+export const VideoTurnedOff = styled.div`
+  width: 90%;
+  height: 100%;
+  background-color: #000;
+  align-self: center;
+`;
+
 export const ToolBar = styled.div<ToolbarProps>`
   width: 90%;
   align-self: center;

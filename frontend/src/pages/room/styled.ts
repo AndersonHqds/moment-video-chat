@@ -14,6 +14,16 @@ export const VideoContainer = styled.div`
   background-color: #333333;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 880px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    overflow-y: scroll;
+    video {
+      margin: 20px 0;
+    }
+  }
 `;
 
 export const ToolBar = styled.div`
@@ -47,4 +57,9 @@ export const IconButton = styled.button<IconButtonProps>`
 export const RoomName = styled.span`
   position: absolute;
   left: 20px;
+
+  @media (max-width: 880px) {
+    top: 5px;
+    color: #fff;
+  }
 `;
