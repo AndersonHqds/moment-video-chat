@@ -33,7 +33,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    setIsButtonEnabled(username.length > 0 && roomName.length > 0);
+    setIsButtonEnabled(
+      username.trim().length > 0 && roomName.trim().length > 0
+    );
   }, [username, roomName]);
 
   return (

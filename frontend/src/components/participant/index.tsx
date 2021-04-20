@@ -13,7 +13,7 @@ import { IProps } from "./types";
 import { useTrack } from "../../hooks/useTrack";
 
 const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
-  const [opacity, setOpacity] = useState(false);
+  const [opacity, setOpacity] = useState("0");
   const {
     audioTracks,
     isRemoteCameraOn,
@@ -34,14 +34,12 @@ const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const showBar = () => {
-    if (!isLocal) setOpacity(true);
+    if (!isLocal) setOpacity("0.7");
   };
 
   const hideBar = () => {
-    if (!isLocal) setOpacity(false);
+    if (!isLocal) setOpacity("0");
   };
-
-  const opacityControl = () => (+opacity - 0.3).toString();
 
   const toggleLocalCamera = () => {
     if (isRemoteCameraOn) {
@@ -87,7 +85,7 @@ const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
       onMouseOver={showBar}
     >
       {!isLocal && (
-        <ToolBar top opacity={opacityControl()}>
+        <ToolBar top opacity={opacity}>
           <FirstNameChar>
             {participant.identity.charAt(0).toUpperCase()}
           </FirstNameChar>
@@ -101,7 +99,7 @@ const ParticipantCard = ({ participant, isLocal, width, height }: IProps) => {
       )}
       <audio ref={audioRef} autoPlay muted={isRemoteMicDisabledFromLocal} />
       {!isLocal && (
-        <ToolBar opacity={opacityControl()} justifyCenter>
+        <ToolBar opacity={opacity} justifyCenter>
           <IconButton onClick={toggleLocalMic} isActive={isMicOn()}>
             {isMicOn() ? <MdMic /> : <MdMicOff />}
           </IconButton>

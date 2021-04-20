@@ -7,6 +7,7 @@ export const Container = styled.div`
   background-image: linear-gradient(to right, #7ec8e3, #5252ed);
   display: grid;
   grid-template-columns: 50% 50%;
+  overflow: hidden;
 
   @media (max-width: 880px) {
     grid-template-columns: 100%;
@@ -17,9 +18,8 @@ export const Container = styled.div`
 
 export const Logo = styled.div`
   display: flex;
-  padding-left: 100px;
   width: 100%;
-  padding-bottom: 50px;
+  padding: 100px 0 50px 100px;
   span {
     font-family: "Lilita One", sans-serif;
     font-size: 42px;
@@ -35,7 +35,7 @@ export const Logo = styled.div`
 export const Grid = styled.div<GridProps>`
   display: flex;
   flex-direction: column;
-  justify-content: ${(props) => props.justify ?? "flex-end"};
+  justify-content: ${(props) => props.justify ?? "flex-start"};
 `;
 
 export const PhoneImage = styled.img`
